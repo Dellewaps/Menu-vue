@@ -16,6 +16,7 @@
           <a class="dropdown-item" href="/admincomponents/setweekmenu">Set ugens menu</a>
           <a class="dropdown-item" href="/admincomponents/createdish">opret en ret</a>
           <a class="dropdown-item" href="/admincomponents/createsidedish">opret en sideret</a>
+          <a class="dropdown-item" href="/admincomponents/openhours">Set Åbningstider</a>
         </div>
       </li>
     </ul>

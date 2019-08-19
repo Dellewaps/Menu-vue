@@ -110,6 +110,7 @@ export default {
         document.getElementById("jombo").style.backgroundColor = "red";
         document.getElementById("jombotext").innerHTML = "Kantinen er Lukket";
       }
+      //eslint-disable-next-line
       }).catch(e => console.error(e))      
     },    
 

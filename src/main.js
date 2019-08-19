@@ -7,6 +7,7 @@ import createdish from './components/admincomponents/createdish.vue'
 import createsidedish from './components/admincomponents/createsidedish.vue'
 import setdaily from './components/admincomponents/setdaily.vue'
 import setweekmenu from './components/admincomponents/setweekmenu.vue'
+import openhours  from './components/admincomponents/openhours.vue'
 // eslint-disable-next-line
 import style from './css/app.css'
 import "bootstrap"
@@ -21,6 +22,7 @@ const routes = {
   '/admincomponents/createsidedish': createsidedish,
   '/admincomponents/setdaily': setdaily,
   '/admincomponents/setweekmenu': setweekmenu,
+  '/admincomponents/openhours': openhours,
 }
 
 Vue.config.productionTip = false
