@@ -79,6 +79,8 @@
 <script>
 import Axios from "axios";
 import { setInterval } from 'timers';
+import moment from "moment";
+moment.locale("da");
 
 export default {
   name: "ugemenu",
@@ -89,36 +91,75 @@ export default {
     };
   },
   methods: {
-    loadData: function() {
-      Axios({
-        method: "get",
-        url: "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php",
-        headers:{
-          Accept: "application/json"
-        }
-      })
-      .then(response => {
-        this.status = response.data.records;
-        //console.log(this.status[0].Status);
-        if (this.status[0].Status == "1")
+    openTime: function(){
+      return Axios.get(
+        "http://menustanderapi.test:8000/endpoints/opentime.php");
+    },
+
+    buttonStatus: function(){
+      return Axios.get(
+        "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php");
+    },
+
+    openClose: function() {
+      const that = this;
+      Axios.all([this.openTime(), this.buttonStatus()])
+        .then(
+          Axios.spread(function(openTimeres, buttonStatusres){
+            that.open = openTimeres.data.records;
+            //eslint-disable-next-line
+            console.log(openTimeres);
+            that.button = buttonStatusres.data.records; 
+            //eslint-disable-next-line
+            console.log(that.button);
+            //this.status = response.data.records;
+            //console.log(this.status[0].Status);
+            
+            //eslint-disable-next-line
+            console.log(moment().format("HH:mm:ss"));
+        if (that.button[0].Status == "1")
       {
         document.getElementById("jombo").style.backgroundColor = "#84FF47";
         document.getElementById("jombotext").innerHTML = "Kantinen er Åben";
       }
-      if (this.status[0].Status == "2")
+      if (that.button[0].Status == "2")
       {
         document.getElementById("jombo").style.backgroundColor = "red";
         document.getElementById("jombotext").innerHTML = "Kantinen er Lukket";
+
+        
+        switch (moment().format("HH,m,s")){
+          case moment().format("HH,m,s") > that.open[0].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[1].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[1].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[2].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[2].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[3].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[3].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[0].open;
+            break;
+          
+          default:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[0].open;
+            break;
+            }
       }
-      //eslint-disable-next-line
-      }).catch(e => console.error(e))      
+          })
+        )//eslint-disable-next-line
+        .catch(e => console.error(e))      
     },    
 
     timer: function(){
-      this.loadData();
+      this.openClose();
 
       setInterval(function(){
-        this.loadData();
+        this.openClose();
       }.bind(this), 10000);
     },
 
@@ -136,7 +177,7 @@ export default {
     
   },
   mounted() {
-    this.loadData()
+    this.openClose()
     this.timer()
   }
 };

@@ -3,7 +3,8 @@
     <div class="jumbotron jumbotron-fluid" id="jombo">
       <div class="container">
         <h1 class="display-6" id="jombotext"></h1>
-        <p class="lead">Ugens Menu</p>
+        <p class="opentimes" id="timetext"></p> 
+        <p class="lead">Dagens Menu</p>
       </div>
     </div>
     <div class="container">
@@ -61,6 +62,10 @@ export default {
       return moment().weekday();
     },
 
+    currentTime(){
+      return moment().format("HH, m, s");
+    },
+
     Kald1() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/dagensret.php"
@@ -93,46 +98,83 @@ export default {
         .catch(e => console.error(e));
     },
 
-    loadData: function() {
-      Axios({
-        method: "get",
-        url: "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php",
-        headers:{
-          Accept: "application/json"
-        }
-      })
-      .then(response => {
-        this.status = response.data.records;
-        //console.log(this.status[0].Status);
-        if (this.status[0].Status == "1")
+    openTime: function(){
+      return Axios.get(
+        "http://menustanderapi.test:8000/endpoints/opentime.php");
+    },
+
+    buttonStatus: function(){
+      return Axios.get(
+        "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php");
+    },
+
+    openClose: function() {
+      const that = this;
+      Axios.all([this.openTime(), this.buttonStatus()])
+        .then(
+          Axios.spread(function(openTimeres, buttonStatusres){
+            that.open = openTimeres.data.records;
+            //eslint-disable-next-line
+            console.log(openTimeres);
+            that.button = buttonStatusres.data.records; 
+            //eslint-disable-next-line
+            console.log(that.button);
+            //this.status = response.data.records;
+            //console.log(this.status[0].Status);
+            
+            //eslint-disable-next-line
+            console.log(moment().format("HH:mm:ss"));
+        if (that.button[0].Status == "1")
       {
         document.getElementById("jombo").style.backgroundColor = "#84FF47";
         document.getElementById("jombotext").innerHTML = "Kantinen er Åben";
       }
-      if (this.status[0].Status == "2")
+      if (that.button[0].Status == "2")
       {
         document.getElementById("jombo").style.backgroundColor = "red";
         document.getElementById("jombotext").innerHTML = "Kantinen er Lukket";
+
+        
+        switch (moment().format("HH,m,s")){
+          case moment().format("HH,m,s") > that.open[0].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[1].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[1].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[2].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[2].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[3].open;
+            break;
+
+          case moment().format("HH,m,s") > that.open[3].closed:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[0].open;
+            break;
+          
+          default:
+            document.getElementById("timetext").innerHTML = "Åbner igen " + that.open[0].open;
+            break;
+            }
       }
-      //eslint-disable-next-line
-      }).catch(e => console.error(e))      
+          })
+        )//eslint-disable-next-line
+        .catch(e => console.error(e))      
     },    
 
     timer: function(){
-      this.loadData();
+      this.openClose();
 
       setInterval(function(){
-        this.loadData();
+        this.openClose();
       }.bind(this), 10000);
     },
     init() {}
   },
   mounted() {
     this.samling();
-    //eslint-disable-next-line
-    //console.log(this.currentDay);
-    this.loadData();
-    this.timer();
+    this.openClose();
+    //this.timer();
   }
 };
 </script>
