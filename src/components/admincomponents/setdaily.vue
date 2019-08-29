@@ -2,22 +2,22 @@
   <div class="page" data-name="ugemenu" :beforein="init()">
     <div class="container">
       <div class="navbar">
-        <navbar/>
-        <div class="banner" id="banner">banner ffs</div> 
-      </div>
+        <navbar/>        
+      </div>      
+      <div class="banner" id="banner">banner ffs</div> 
       <div class="row justify-content-center">
         <div class="col-md-8">
           <div class="card" :bind="sides">
-            <div class="card-header">Set dagens menu</div>
-            <div class="form-group row" :bind="currentDay">
+            <div class="card-header">Set dagens menu</div>            
+            <div class="card-body">
+              <div class="form-group row" :bind="currentDay">
               <label for="Description" class="col-md-4 col-form-label text-md-right">Tilbehør</label>
 
               <div class="col-md-6">
-                <textarea v-model="description" :placeholder="currentDay.accessories">
+                <textarea class="dailydes" v-model="description" :placeholder="currentDay.accessories">
                 </textarea>
               </div>
             </div>
-            <div class="card-body">
               <div class="form-group row">
                 <label for="sidedish" class="col-md-4 col-form-label text-md-right">Diverse</label>
 
@@ -27,7 +27,7 @@
                     <option
                       v-for="side in sides"
                       :value="side"
-                      :key="side.id"
+                      :key="side.ID"
                     >{{side.name}} {{side.description}}</option>
                   </select>
                 </div>
@@ -41,7 +41,7 @@
                     <option
                       v-for="side in sides"
                       :value="side"
-                      :key="side.id"
+                      :key="side.ID"
                     >{{side.name}} {{side.description}}</option>
                   </select>
                 </div>
@@ -55,7 +55,7 @@
                     <option
                       v-for="side in sides"
                       :value="side"
-                      :key="side.id"
+                      :key="side.ID"
                     >{{side.name}} {{side.description}}</option>
                   </select>
                 </div>
@@ -69,7 +69,7 @@
                     <option
                       v-for="side in sides"
                       :value="side"
-                      :key="side.id"
+                      :key="side.ID"
                     >{{side.name}} {{side.description}}</option>
                   </select>
                 </div>
@@ -160,6 +160,15 @@ export default {
     },
 
     createPost() {
+      
+      if(this.sideone == '' || this.sidetwo == '' || this.sidethree == '' || this.sidethree == '')
+      {
+        document.getElementById("banner").style.backgroundColor = "red";
+        document.getElementById("banner").style.display = "block";
+        document.getElementById("banner").innerHTML = "Der skal vælges noget i alle Diverse";
+        return;
+      }
+
       if(this.description == '')
       {
           this.description = this.currentDay.accessories

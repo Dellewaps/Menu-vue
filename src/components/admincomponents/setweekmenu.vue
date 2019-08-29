@@ -2,17 +2,30 @@
   <div class="page" data-name="ugemenu" :beforein="init()">
     <div class="container" id="selectmodel">
       <div class="navbar">
-        <navbar/>
+        <navbar />
       </div>
-      <div class="content">
+      <div id="banner"></div>
+      <div class="content">        
         <div class="row justify-content-center">
           <div class="col-md-8">
             <div class="card" :bind="dishes">
-              <div class="card-header">Set dagens menu</div>
+              <div class="card-header">Set ugens menu</div>
+
               <div class="form-group row">
-                <label for="monday" class="col-md-4 col-form-label text-md-right">Mandag</label>
+                <div class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    value="open"
+                    v-model="mondaycheck"
+                    true-value="Lukket"
+                    false-value="Åben"
+                  />
+                  <label id="checklabel">{{mondaycheck}}</label>
+                </div>
+                <label for="monday" class="col-md-3 col-form-label ">Mandag</label>
                 <div class="col-md-6">
-                  <select v-model="monday" @change="onChange()">
+                  <select class="select" v-model="monday" @change="onChange()">
                     <option disabled value>Please select one</option>
                     <option
                       v-for="dish in dishes"
@@ -22,11 +35,22 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group row">
-                <label for="tuesday" class="col-md-4 col-form-label text-md-right">Tirsdag</label>
 
+              <div class="form-group row">
+                <div class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    value="open"
+                    v-model="tuesdaycheck"
+                    true-value="Lukket"
+                    false-value="Åben"
+                  />
+                  <label id="checklabel">{{tuesdaycheck}}</label>
+                </div>
+                <label for="tuesday" class="col-md-3 col-form-label ">Tirsdag</label>
                 <div class="col-md-6">
-                  <select v-model="tuesday" @change="onChange()">
+                  <select class="select" v-model="tuesday" @change="onChange()">
                     <option disabled value>Please select one</option>
                     <option
                       v-for="dish in dishes"
@@ -36,11 +60,22 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group row">
-                <label for="wednesday" class="col-md-4 col-form-label text-md-right">Onsdag</label>
 
+              <div class="form-group row">
+                <div class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    value="open"
+                    v-model="wednesdaycheck"
+                    true-value="Lukket"
+                    false-value="Åben"
+                  />
+                  <label id="checklabel">{{wednesdaycheck}}</label>
+                </div>
+                <label for="wednesday" class="col-md-3 col-form-label ">Onsdag</label>
                 <div class="col-md-6">
-                  <select v-model="wednesday" @change="onChange()">
+                  <select class="select" v-model="wednesday" @change="onChange()">
                     <option disabled value>Please select one</option>
                     <option
                       v-for="dish in dishes"
@@ -50,11 +85,23 @@
                   </select>
                 </div>
               </div>
+              
               <div class="form-group row">
-                <label for="thursday" class="col-md-4 col-form-label text-md-right">Torsdag</label>
-
+                <div class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    value="open"
+                    v-model="thursdaycheck"
+                    true-value="Lukket"
+                    false-value="Åben"
+                    @change="checked()"
+                  />
+                  <label id="checklabel">{{thursdaycheck}}</label>
+                </div>
+                <label for="thursday" class="col-md-3 col-form-label ">Torsdag</label>
                 <div class="col-md-6">
-                  <select v-model="thursday" @change="onChange()">
+                  <select class="select" v-model="thursday" @change="onChange()">
                     <option disabled value>Please select one</option>
                     <option
                       v-for="dish in dishes"
@@ -63,22 +110,32 @@
                     >{{dish.name}} {{dish.description}}</option>
                   </select>
                 </div>
-                <label for="firday" class="col-md-4 col-form-label text-md-right">Fredag</label>
-
+              </div>
+              
+              <div class="form-group row">
+                <div class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    value="open"
+                    v-model="fridaycheck"
+                    true-value="Lukket"
+                    false-value="Åben"
+                    @change="checked()"
+                  />
+                  <label id="checklabel">{{fridaycheck}}</label>
+                </div>
+                <label for="firday" class="col-md-3 col-form-label ">Fredag</label>
                 <div class="col-md-6">
-                  <select v-model="friday" @change="onChange()">
+                  <select class="select" v-model="friday" @change="onChange()">
                     <option disabled value>Please select one</option>
-                    <option
-                      v-for="dish in dishes"
-                      :value="dish"
-                      :key="dish.id"
-                    >{{dish.name}} {{dish.description}}</option>
+                    <option v-for="dish in dishes" :value="dish" :key="dish.ID">{{dish.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
-                  <input type="button" @click="createPost()" value="Gem dagens menu">
+                  <input type="button" @click="createPost()" value="Gem dagens menu" />
                 </div>
               </div>
             </div>
@@ -111,76 +168,122 @@ export default {
       selectedwednesday: 0,
       selectedthursday: 0,
       selectedfriday: 0,
-      
+      mondaycheck: "Åben",
+      tuesdaycheck: "Åben",
+      wednesdaycheck: "Åben",
+      thursdaycheck: "Åben",
+      fridaycheck: "Åben",
+      mondaychecked: 1,
+      tuesdaychecked: 1,
+      wednesdaychecked: 1,
+      thursdaychecked: 1,
+      fridaychecked: 1
     };
   },
   methods: {
+    checked() {
+      if (this.mondaycheck == "Lukket") {
+        this.mondaychecked = 0;
+      }
+
+      if (this.tuesdaycheck == "Lukket") {
+        this.tuesdaychecked = 0;
+      }
+
+      if (this.wednesdaycheck == "Lukket") {
+        this.wednesdaychecked = 0;
+      }
+
+      if (this.thursdaycheck == "Lukket") {
+        this.thursdaychecked = 0;
+      }
+
+      if (this.fridaycheck == "Lukket") {
+        this.fridaychecked = 0;
+      }
+    },
+
     onChange() {
       this.selectedmonday = this.monday.ID;
-      //eslint-disable-next-line
-      console.log(this.selectedmonday);
 
       this.selectedtuesday = this.tuesday.ID;
-      //eslint-disable-next-line
-      console.log(this.selectedtusday);
 
       this.selectedwednesday = this.wednesday.ID;
-      //eslint-disable-next-line
-      console.log(this.selectedwednesday);
 
       this.selectedthursday = this.thursday.ID;
-      //eslint-disable-next-line
-      console.log(this.selectedthursday);
 
       this.selectedfriday = this.friday.ID;
       //eslint-disable-next-line
       console.log(this.selectedfriday);
     },
     createPost() {
+      if (
+        this.monday == "" ||
+        this.tuesday == "" ||
+        this.wednesday == "" ||
+        this.thursday == "" ||
+        this.friday == ""
+      ) {
+        document.getElementById("banner").style.backgroundColor = "red";
+        document.getElementById("banner").style.display = "block";
+        document.getElementById("banner").innerHTML =
+          "der skal vælges noget i alle Diverse";
+        return;
+      }
+
       const formData = new FormData();
 
-      formData.append('monday', this.selectedmonday)
-      formData.append('tuesday', this.selectedtuesday)
-      formData.append('wednesday', this.selectedwednesday)
-      formData.append('thursday', this.selectedthursday)
-      formData.append('friday', this.selectedfriday)
+      formData.append("monday", this.selectedmonday);
+      formData.append("tuesday", this.selectedtuesday);
+      formData.append("wednesday", this.selectedwednesday);
+      formData.append("thursday", this.selectedthursday);
+      formData.append("friday", this.selectedfriday);
+      formData.append("mondaycheck", this.mondaychecked);
+      formData.append("tuesdaycheck", this.tuesdaychecked);
+      formData.append("wednesdaycheck", this.wednesdaychecked);
+      formData.append("thursdaycheck", this.thursdaychecked);
+      formData.append("fridaycheck", this.fridaychecked);
 
-      Axios.post("http://menustanderapi.test:8000/endpoints/setweekpost.php", 
-      formData, 
-      {        
-        headers: {
-          'Content-Type': 'multipart/form-data'        
-        }
-      }, "json") 
-        .then((response) => {
+      Axios.post(
+        "http://menustanderapi.test:8000/endpoints/setweekpost.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        },
+        "json"
+      )
+        .then(response => {
           //eslint-disable-next-line
-          console.log(response.data)
+          console.log(response.data);
           document.getElementById("banner").style.display = "block";
           document.getElementById("banner").innerHTML = response.data.message;
-          if(response.data.result == 1){
-            
+          if (response.data.result == 1) {
             document.getElementById("banner").style.backgroundColor = "green";
             //eslint-disable-next-line
             console.log(response.data.message);
-          }else{
+          } else {
             //eslint-disable-next-line
             console.log("GAL");
             document.getElementById("banner").style.backgroundColor = "red";
           }
           //eslint-disable-next-line
-          console.log('Success!!');
-
+          console.log("Success!!");
+          return;
         })
-        .catch(function () {
+        .catch(e => {
           //eslint-disable-next-line
-          console.error('Failure!!');
+          console.error("Failure!!");
+          //eslint-disable-next-line
+          console.log(e);
         });
     },
 
     init() {
       Axios({
         method: "get",
-        url: "http://menustanderapi.test:8000/endpoints/ugensmenu.php",
+        url: "http://menustanderapi.test:8000/endpoints/alleretter.php",
         headers: {
           Accept: "application/json"
         }

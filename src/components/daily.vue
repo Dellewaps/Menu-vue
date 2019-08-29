@@ -14,7 +14,7 @@
             <h1>Dagens Ret</h1>
           </div>
           <div class="imageleft">
-            <img class="img" src />
+            <img class="img" v-bind:src="require('../../public/images/' + currentDay.photo)" />
           </div>
           <div class="weekday">
             <h2>{{ today }}</h2>
@@ -23,10 +23,10 @@
             <h3>{{ currentDay.name }}</h3>
           </div>
           <div class="priceleft">
-            <p></p>
+            <h4>{{ currentDay.price }}</h4>
           </div>
           <div class="dishdes">
-            <p></p>
+            <h4>{{ currentDay.accessories }}</h4>
           </div>
         </div>
 
@@ -89,6 +89,8 @@ export default {
             that.currentDay = kald2res.data.records[that.dayOfWeek() - 1];
             that.prop = kald1res.data.records;
             that.week = kald2res.data.records;
+            //eslint-disable-next-line
+            console.log(that.currentDay);
 
             //document.getElementsByClassName("dishdes").innerHTML = kald1res
             //eslint-disable-next-line
@@ -157,7 +159,7 @@ export default {
   mounted() {
     this.samling();
     this.openClose();
-    //this.timer();
+    this.timer();
   }
 };
 </script>

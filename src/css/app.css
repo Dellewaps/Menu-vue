@@ -1,91 +1,138 @@
 #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.jumbotron{
+.jumbotron {
   text-align: center;
   height: 170px;
   padding: 1rem 1rem;
 }
 
-#jombo{
+#jombo {
   padding: 2rem 1rem;
 }
+
 /* CSS for image */
-.imageleft{
-    float: right;
-  }
+.imageleft {
+  float: right;
+}
 
-  .imageright{
-    float: left;
-  }
-
-  .img{
-    height: 200px;
-    width: 350px;
-  }
+.container{
+  max-width: 100% !important;
+}
 
 
-  /* CSS for the daily page*/
-  .dayhead{
-    max-width: 250px;
-  }
 
-  .weekday{
-    max-width: 250px;
-  }
+.img {
+  height: 150px;
+  width: 200px;
+}
 
-  .dishtoday{
-    max-width: 250px;
-  }
 
-  .priceleft{
-    float: right;
-  }
-  
-  .dishdes{
-    max-width: 250px;
-  }
+/* CSS for the daily page*/
+.dayhead {
+  max-width: 250px;
+}
 
-  /* CSS for the week menu page*/
-  .head-line {
-    text-align: center;
-    }
-    
-    #col-right {
-    text-align: right;
-    }
-    
-    .days-left{
-    padding-bottom: 15rem;
-    
-    }
-    
-    .days-right{
-    padding-top: 5rem;
-    padding-bottom: 15rem;
-    }
-    
-    .dayrow{
-      display: flex;
-    }
-    
-    .daydish{
-      flex: 50%;
-      padding: 10px;  
-    }
-    
-    .dayhead{
-      text-align: center;
-    }
-    .banner{
-      border-style: solid;
-      border-width: 2px;
-      border-color: pink;
-      text-align: center;
-      display: none;
-    }
-    
-  
+.weekday {
+  max-width: 250px;
+}
+
+.dishtoday {
+  max-width: 250px;
+}
+
+.priceleft {
+  float: right;
+}
+
+.dishdes {
+  max-width: 250px;
+}
+
+/* CSS for the week menu page*/
+.ugen {
+  max-width: 100%;
+  margin: 2%;
+}
+
+.col-md-5 {
+  min-width: 50%;
+  margin-bottom: 2%;
+}
+
+.head-line {
+  text-align: center;
+}
+
+.days-right {
+  display: flex;
+}
+
+.dayrow {
+  display: flex;
+}
+
+.daydish {
+  flex: 50%;
+  padding: 10px;
+}
+
+.dayhead {
+  text-align: center;
+}
+
+.priceright {
+  float: right
+}
+
+.banner {
+  border-style: solid;
+  border-width: 2px;
+  border-color: pink;
+  text-align: center;
+  display: none;
+}
+
+/*CSS for Set weekmenu*/
+.checkbox {
+  align-self: center;
+  margin-left: 4rem;
+  margin-top: 0.5rem;
+}
+
+.col-md-3.col-form-label {
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.col-md-6 {
+  align-self: center;
+}
+
+.select {
+  float: left;
+}
+
+#checkbox {
+  margin-left: 30px;
+}
+
+#checklabel {
+  width: 47px;
+  margin-left: 10px;
+}
+
+/*Css for set daily page*/
+
+.dailydes {
+  width: 212.4px;
+}
+
+/*CSS for create dish */
+
+.inputbox {
+  width: 212.4px;
+}
