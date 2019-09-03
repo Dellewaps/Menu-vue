@@ -102,6 +102,10 @@
   margin-left: 4rem;
   margin-top: 0.5rem;
 }
+.row justify-content-center{
+  margin-left: 10rem;
+  width: 50px;
+}
 
 .col-md-3.col-form-label {
   text-align: center;

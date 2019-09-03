@@ -8,6 +8,7 @@ import createsidedish from './components/admincomponents/createsidedish.vue'
 import setdaily from './components/admincomponents/setdaily.vue'
 import setweekmenu from './components/admincomponents/setweekmenu.vue'
 import openhours  from './components/admincomponents/openhours.vue'
+import login from './components/admincomponents/login.vue'
 // eslint-disable-next-line
 import style from './css/app.css'
 import "bootstrap"
@@ -23,6 +24,7 @@ const routes = {
   '/admincomponents/setdaily': setdaily,
   '/admincomponents/setweekmenu': setweekmenu,
   '/admincomponents/openhours': openhours,
+  '/admincomponents/login': login,
 }
 
 Vue.config.productionTip = false

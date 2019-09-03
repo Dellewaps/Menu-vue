@@ -26,12 +26,12 @@
         <div class="col-md-5" id="col-right">
           <div class="days-right">
             <div class="col-md-8">
-            <h2>Tirsdag</h2>
-            <h3>{{prop[1].name}}</h3>
-            <div class="priceright">
-              <h4>{{prop[1].price}}</h4>
-            </div>
-            <h4>{{prop[1].accessories}}</h4>
+              <h2>Tirsdag</h2>
+              <h3>{{prop[1].name}}</h3>
+              <div class="priceright">
+                <h4>{{prop[1].price}}</h4>
+              </div>
+              <h4>{{prop[1].accessories}}</h4>
             </div>
             <div class="imageright">
               <img class="img" v-bind:src="require('../../public/images/' + prop[1].photo)" />
@@ -54,12 +54,12 @@
         <div class="col-md-5" id="col-right">
           <div class="days-right">
             <div class="col-md-8">
-            <h2>Torsdag</h2>
-            <h3>{{prop[3].name}}</h3>
-            <div class="priceright">
-              <h4>{{prop[3].price}}</h4>
-            </div>
-            <h4>{{prop[3].accessories}}</h4>
+              <h2>Torsdag</h2>
+              <h3>{{prop[3].name}}</h3>
+              <div class="priceright">
+                <h4>{{prop[3].price}}</h4>
+              </div>
+              <h4>{{prop[3].accessories}}</h4>
             </div>
             <div class="imageright">
               <img class="img" v-bind:src="require('../../public/images/' + prop[3].photo)" />
@@ -69,7 +69,7 @@
         <div class="col-md-6">
           <div class="days-left">
             <div class="imageleft">
-              <img class="img" v-bind:src="require('../../public/images/' + prop[4].photo)"/>
+              <img class="img" v-bind:src="require('../../public/images/' + prop[4].photo)" />
             </div>
             <h2>Fredag</h2>
             <h3>{{prop[4].name}}</h3>
@@ -79,8 +79,6 @@
             <h4>{{prop[4].accessories}}</h4>
           </div>
         </div>
-        
-        
       </div>
     </div>
   </div>
@@ -97,16 +95,18 @@ export default {
   data() {
     return {
       prop: ["", "", "", "", ""],
-      status: []
+      status: [],
+      open: []
     };
   },
   methods: {
+    
     openTime: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/nextopentime.php"
       );
     },
-
+    
     buttonStatus: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
@@ -124,11 +124,10 @@ export default {
             that.button = buttonStatusres.data.records;
             //eslint-disable-next-line
             //console.log(that.button);
-            //this.status = response.data.records;
-            //console.log(this.status[0].Status);
-
             //eslint-disable-next-line
-            //console.log(moment().format("HH:mm:ss"));
+            //console.log(that.times);
+            //eslint-disable-next-line
+            //console.log(that.button);
             if (that.button[0].Status == "1") {
               document.getElementById("jombo").style.backgroundColor =
                 "#84FF47";
@@ -139,8 +138,21 @@ export default {
               document.getElementById("jombo").style.backgroundColor = "red";
               document.getElementById("jombotext").innerHTML =
                 "Kantinen er Lukket";
-              document.getElementById("timetext").innerHTML =
+              if (
+                (that.button[0].Status == "2" && that.times == "0") ||
+                (that.button[0].Status == "2" && that.times == "1")
+              ) {
+                document.getElementById("jombo").style.backgroundColor = "red";
+                document.getElementById("jombotext").innerHTML =
+                  "Kantinen er Lukket";
+                document.getElementById("timetext").innerHTML =
+                  "Åbner igen i morgen ";
+              }else{
+                document.getElementById("timetext").innerHTML =
                 "Åbner igen kl: " + that.times[0].open;
+              }
+                
+                  
             }
           })
         ) //eslint-disable-next-line
@@ -158,22 +170,20 @@ export default {
       );
     },
 
-    init() {
-      
-    }
+    init() {}
   },
   mounted() {
     Axios({
-        method: "get",
-        url: "http://menustanderapi.test:8000/endpoints/ugensmenu.php",
-        headers: {
-          Accept: "application/json"
-        }
-      }).then(response => {
-        this.prop = response.data.records;
-        
-      });
-    this.openClose();
+      method: "get",
+      url: "http://menustanderapi.test:8000/endpoints/ugensmenu.php",
+      headers: {
+        Accept: "application/json"
+      }
+    }).then(response => {
+      this.prop = response.data.records;
+    });
+    
+    //this.openClose();
     this.timer();
   }
 };

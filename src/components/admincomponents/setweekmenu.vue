@@ -183,7 +183,7 @@ export default {
   methods: {
     checked() {
       if (this.mondaycheck == "Lukket") {
-        this.mondaychecked = 0;
+        this.mondaychecked = 0;        
       }
 
       if (this.tuesdaycheck == "Lukket") {
@@ -281,7 +281,11 @@ export default {
     },
 
     init() {
-      Axios({
+      
+    }
+  },
+  mounted() {
+    Axios({
         method: "get",
         url: "http://menustanderapi.test:8000/endpoints/alleretter.php",
         headers: {
@@ -289,9 +293,9 @@ export default {
         }
       }).then(response => {
         this.dishes = response.data.records;
+        //eslint-disable-next-line
+      console.log(response.data.records);
       });
-    }
-  },
-  mounted() {}
+  }
 };
 </script>
