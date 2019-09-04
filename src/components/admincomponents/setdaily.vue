@@ -1,5 +1,5 @@
 <template>
-  <div class="page" data-name="ugemenu" :beforein="init()">
+  <div class="page" data-name="setdaily" :beforein="init()">
     <div class="container">
       <div class="navbar">
         <navbar/>        

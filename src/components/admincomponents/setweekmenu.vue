@@ -1,5 +1,5 @@
 <template>
-  <div class="page" data-name="ugemenu" :beforein="init()">
+  <div class="page" data-name="setweekmenu" :beforein="init()">
     <div class="container" id="selectmodel">
       <div class="navbar">
         <navbar />

@@ -152,14 +152,7 @@ export default {
         }
       }).then(response => {
         this.times = response.data.records;                
-        this.morningOpen = this.times[0].open;
-        this.morningClose = this.times[0].closed;
-        this.beforeDinnerOpen = this.times[1].open;
-        this.beforeDinnerClose = this.times[1].closed;
-        this.dinnerOpen = this.times[2].open;
-        this.dinnerClose = this.times[2].closed;
-        this.afternoonOpen = this.times[3].open;
-        this.afternoonClose = this.times[3].closed;
+        
       });
   }
 };
