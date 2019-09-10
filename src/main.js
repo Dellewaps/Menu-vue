@@ -4,6 +4,7 @@ import ugemenu from './components/ugemenu.vue'
 import daily from './components/daily.vue'
 import admin from './components/admincomponents/admin.vue'
 import login from './components/admincomponents/login.vue'
+import registere from './components/admincomponents/registere.vue'
 import createdish from './components/admincomponents/createdish.vue'
 import createsidedish from './components/admincomponents/createsidedish.vue'
 import setdaily from './components/admincomponents/setdaily.vue'
@@ -20,6 +21,7 @@ const routes = {
   '/ugemenu': ugemenu,
   '/daily': daily,
   '/admincomponents/login': login,
+  '/admincomponents/registere': registere,
   '/admincomponents/admin': admin,
   '/admincomponents/createdish': createdish,
   '/admincomponents/createsidedish': createsidedish,

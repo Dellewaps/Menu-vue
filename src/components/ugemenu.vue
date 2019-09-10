@@ -94,19 +94,32 @@ export default {
   name: "ugemenu",
   data() {
     return {
-      prop: ["", "", "", "", ""],
+      prop: [],
       status: [],
-      open: []
+      open: [],
+      closed: []
     };
   },
   methods: {
-    
+    closedCheck: function() {
+      Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
+        .then(response => {
+          //eslint-disable-next-line
+          //console.log(response.data.records);
+          this.closed = response.data.records;
+        })
+        .catch(function(error) {
+          //eslint-disable-next-line
+          console.log(error);
+        });
+    },
+
     openTime: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/nextopentime.php"
       );
     },
-    
+
     buttonStatus: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
@@ -115,45 +128,48 @@ export default {
 
     openClose: function() {
       const that = this;
+      this.closedCheck();
       Axios.all([this.openTime(), this.buttonStatus()])
         .then(
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
             //eslint-disable-next-line
-            //console.log(openTimeres);
+           // console.log(openTimeres);
             that.button = buttonStatusres.data.records;
             //eslint-disable-next-line
             //console.log(that.button);
             //eslint-disable-next-line
             //console.log(that.times);
             //eslint-disable-next-line
-            //console.log(that.button);
-            if (that.button[0].Status == "1") {
-              document.getElementById("jombo").style.backgroundColor =
-                "#84FF47";
-              document.getElementById("jombotext").innerHTML =
-                "Kantinen er Åben";
-            }
-            if (that.button[0].Status == "2") {
-              document.getElementById("jombo").style.backgroundColor = "red";
-              document.getElementById("jombotext").innerHTML =
-                "Kantinen er Lukket";
-              if (
-                (that.button[0].Status == "2" && that.times == "0") ||
-                (that.button[0].Status == "2" && that.times == "1")
-              ) {
+            //console.log(that.closed);
+            let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            that.closed.forEach(function(day, index){
+              //eslint-disable-next-line
+            //console.dir(day);
+              if (day[weekdays[index]] == 1) {
+              if (that.button[0].Status == "1") {
+                document.getElementById("jombo").style.backgroundColor =
+                  "#84FF47";
+                document.getElementById("jombotext").innerHTML =
+                  "Kantinen er Åben";
+              }else{
                 document.getElementById("jombo").style.backgroundColor = "red";
                 document.getElementById("jombotext").innerHTML =
                   "Kantinen er Lukket";
-                document.getElementById("timetext").innerHTML =
-                  "Åbner igen i morgen ";
-              }else{
-                document.getElementById("timetext").innerHTML =
-                "Åbner igen kl: " + that.times[0].open;
-              }
+                  if(that.times[0]){
+                    document.getElementById("timetext").innerHTML =
+                  "Åbner igen kl: " + that.times[0].open;
+                  }
                 
-                  
+              }
+            }else {
+              document.getElementById("jombo").style.backgroundColor = "red";
+              document.getElementById("jombotext").innerHTML =
+                "Kantinen er Lukket";
+              document.getElementById("timetext").innerHTML =
+                "Åbner igen i morgen ";
             }
+            })
           })
         ) //eslint-disable-next-line
         .catch(e => console.error(e));
@@ -182,7 +198,8 @@ export default {
     }).then(response => {
       this.prop = response.data.records;
     });
-    
+    this.closedCheck();
+
     //this.openClose();
     this.timer();
   }

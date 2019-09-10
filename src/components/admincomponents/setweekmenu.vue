@@ -227,7 +227,7 @@ export default {
         document.getElementById("banner").style.backgroundColor = "red";
         document.getElementById("banner").style.display = "block";
         document.getElementById("banner").innerHTML =
-          "der skal vælges noget i alle Diverse";
+          "der skal vælges noget i alle Felter";
         return;
       }
 
