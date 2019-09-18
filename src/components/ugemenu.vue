@@ -18,7 +18,7 @@
             <h2>Mandag</h2>
             <h3 class="mandagretnavn">{{prop[0].name}}</h3>
             <div class="priceleft">
-              <h4 class="pricemandag">{{prop[0].price}}</h4>
+              <h4 class="pricemandag">{{prop[0].price}} kr</h4>
             </div>
             <h4 class="tilbehørmandag">{{prop[0].accessories}}</h4>
           </div>
@@ -29,7 +29,7 @@
               <h2>Tirsdag</h2>
               <h3>{{prop[1].name}}</h3>
               <div class="priceright">
-                <h4>{{prop[1].price}}</h4>
+                <h4>{{prop[1].price}} kr</h4>
               </div>
               <h4>{{prop[1].accessories}}</h4>
             </div>
@@ -46,7 +46,7 @@
             <h2>Onsdag</h2>
             <h3>{{prop[2].name}}</h3>
             <div class="priceleft">
-              <h4>{{prop[2].price}}</h4>
+              <h4>{{prop[2].price}} kr</h4>
             </div>
             <h4>{{prop[2].accessories}}</h4>
           </div>
@@ -57,7 +57,7 @@
               <h2>Torsdag</h2>
               <h3>{{prop[3].name}}</h3>
               <div class="priceright">
-                <h4>{{prop[3].price}}</h4>
+                <h4>{{prop[3].price}} kr</h4>
               </div>
               <h4>{{prop[3].accessories}}</h4>
             </div>
@@ -66,15 +66,15 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="days-left">
+        <div class="col-md-6 friday">
+          <div class="days-center">
             <div class="imageleft">
               <img class="img" v-bind:src="require('../../public/images/' + prop[4].photo)" />
             </div>
             <h2>Fredag</h2>
             <h3>{{prop[4].name}}</h3>
             <div class="priceleft">
-              <h4>{{prop[4].price}}</h4>
+              <h4>{{prop[4].price}} kr</h4>
             </div>
             <h4>{{prop[4].accessories}}</h4>
           </div>
@@ -104,8 +104,6 @@ export default {
     closedCheck: function() {
       Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
         .then(response => {
-          //eslint-disable-next-line
-          //console.log(response.data.records);
           this.closed = response.data.records;
         })
         .catch(function(error) {
@@ -133,19 +131,9 @@ export default {
         .then(
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
-            //eslint-disable-next-line
-           // console.log(openTimeres);
             that.button = buttonStatusres.data.records;
-            //eslint-disable-next-line
-            //console.log(that.button);
-            //eslint-disable-next-line
-            //console.log(that.times);
-            //eslint-disable-next-line
-            //console.log(that.closed);
             let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
             that.closed.forEach(function(day, index){
-              //eslint-disable-next-line
-            //console.dir(day);
               if (day[weekdays[index]] == 1) {
               if (that.button[0].Status == "1") {
                 document.getElementById("jombo").style.backgroundColor =
@@ -199,8 +187,6 @@ export default {
       this.prop = response.data.records;
     });
     this.closedCheck();
-
-    //this.openClose();
     this.timer();
   }
 };

@@ -48,6 +48,11 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  beforeCreate(){
+      if(!sessionStorage.getItem('loggedIn')){
+        window.location.href = '/admincomponents/login';
+      }
+    },
   name: "registere",
   components: {
       navbar: navbar
@@ -76,8 +81,6 @@ export default {
         }
       }, "json") .then(response => {
         this.login = response.data;        
-        //eslint-disable-next-line
-        console.log(response.data.result);
         return;
       }).catch(function () {
           //eslint-disable-next-line

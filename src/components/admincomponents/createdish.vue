@@ -54,6 +54,11 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  beforeCreate(){
+      if(!sessionStorage.getItem('loggedIn')){
+        window.location.href = '/admincomponents/login';
+      }
+    },
   name: "createdish",
   components: {
     navbar: navbar
@@ -97,14 +102,10 @@ export default {
         "json"
       )
         .then(response => {
-          //eslint-disable-next-line
-          console.log(response.data);
           document.getElementById("banner").style.display = "block";
           document.getElementById("banner").innerHTML = response.data.message;
           if (response.data.result == 1) {
             document.getElementById("banner").style.backgroundColor = "green";
-            //eslint-disable-next-line
-            console.log(response.data.message);
           } else {
             //eslint-disable-next-line
             console.log("GAL");

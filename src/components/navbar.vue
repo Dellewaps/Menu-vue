@@ -20,6 +20,7 @@
         </div>
       </li>
     </ul>
+    <button class="btn navbar-btn" @click="Logout()">Logout</button>
   </div>
 </nav>
 </template>
@@ -28,6 +29,14 @@
 
 export default {
   name: 'navbar',
+
+  methods: { 
+    Logout(){
+      sessionStorage.clear();
+      window.location.href = '/';
+    }
+
+  }
 }
 </script>
 

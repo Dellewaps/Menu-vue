@@ -94,6 +94,11 @@ import moment from "moment";
 moment.locale("da");
 
 export default {
+  beforeCreate(){
+      if(!sessionStorage.getItem('loggedIn')){
+        window.location.href = '/admincomponents/login';
+      }
+    },
   name: "setdaily",
   components: {
     navbar: navbar
@@ -129,11 +134,7 @@ export default {
       Axios.all([this.Kald1(), this.kald2()])
         .then(
           Axios.spread(function(kald1res, kald2res) {
-            //eslint-disable-next-line
-            console.log(kald1res);
-            //eslint-disable-next-line
-            console.log(kald2res.data.records[that.dayOfWeek() - 1]);
-            that.currentDay = kald2res.data.records[that.dayOfWeek() - 1];
+            that.currentDay = kald2res.data.records[that.dayOfWeek()];
             that.sides = kald1res.data.records;
             that.week = kald2res.data.records;
 
@@ -143,20 +144,12 @@ export default {
 
     onChange() {
         this.selectedsideone = this.sideone.ID
-        //eslint-disable-next-line
-        console.log(this.selectedsideone)
 
-        this.selectedsidetwo = this.sidetwo.ID   
-        //eslint-disable-next-line
-        console.log(this.selectedsidetwo)
+        this.selectedsidetwo = this.sidetwo.ID 
 
-        this.selectedsidethree = this.sidethree.ID      
-        //eslint-disable-next-line
-        console.log(this.selectedsidethree)
+        this.selectedsidethree = this.sidethree.ID  
 
         this.selectedsidefour = this.sidefour.ID
-        //eslint-disable-next-line
-        console.log(this.selectedsidefour)
     },
 
     createPost() {
@@ -172,13 +165,9 @@ export default {
       if(this.description == '')
       {
           this.description = this.currentDay.accessories
-          //eslint-disable-next-line
-          console.log(this.description)
       }else
       {
         this.description = this.description
-        //eslint-disable-next-line
-        console.log(this.description)
       }
 
       const formData = new FormData();
@@ -204,8 +193,6 @@ export default {
           if(response.data.result == 1){
             
             document.getElementById("banner").style.backgroundColor = "green";
-            //eslint-disable-next-line
-            console.log(response.data.message);
           }else{
             //eslint-disable-next-line
             console.log("GAL");

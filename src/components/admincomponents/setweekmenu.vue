@@ -151,6 +151,11 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  beforeCreate(){
+      if(!sessionStorage.getItem('loggedIn')){
+        window.location.href = '/admincomponents/login';
+      }
+    },
   name: "setweekmenu",
   components: {
     navbar: navbar

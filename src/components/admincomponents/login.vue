@@ -48,7 +48,8 @@ export default {
   data() {
     return {
         username: '',
-        password: ''
+        password: '',
+        loggedIn: false
     }
   },
   
@@ -70,15 +71,16 @@ export default {
       }, "json") .then(response => {
         this.login = response.data;
         if(response.data.result ==  1){
+          this.loggedIn = true;
+          sessionStorage.setItem('username', this.username);
+          sessionStorage.setItem('password', this.username);
+          sessionStorage.setItem('loggedIn', this.loggedIn);
           window.location.href = '/admincomponents/admin';
-          //this.$router.push('/admin');
         }else{
         document.getElementById("banner").style.backgroundColor = "red";
         document.getElementById("banner").style.display = "block";
         document.getElementById("banner").innerHTML = "Brugernavn og kodeord passer ikke sammen";
         }
-        //eslint-disable-next-line
-        console.log(response.data.result);
         return;
       }).catch(function () {
           //eslint-disable-next-line

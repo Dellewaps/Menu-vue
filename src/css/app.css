@@ -32,6 +32,10 @@
 
 
 /* CSS for the daily page*/
+.dayrow{
+  margin-left: 8%;
+  margin-top: 5%;
+}
 .dayhead {
   max-width: 250px;
 }
@@ -86,6 +90,10 @@
 
 .priceright {
   float: right
+}
+
+.col-md-6.friday{
+margin: auto;
 }
 
 .banner {

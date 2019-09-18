@@ -1,5 +1,5 @@
 <template>
-  <div class="page" data-name="daily" :init="init()">
+  <div class="page" data-name="daily" :beforein="init()">
     <div class="jumbotron jumbotron-fluid" id="jombo">
       <div class="container">
         <h1 class="display-6" id="jombotext"></h1>
@@ -23,7 +23,7 @@
             <h3>{{ currentDay.name }}</h3>
           </div>
           <div class="priceleft">
-            <h4>{{ currentDay.price }}</h4>
+            <h4>{{ currentDay.price }} kr</h4>
           </div>
           <div class="dishdes">
             <h4>{{ currentDay.accessories }}</h4>
@@ -54,7 +54,9 @@ export default {
       prop: [],
       week: {},
       currentDay: [],
-      today: moment().format("dddd")
+      today: moment().format("dddd"),
+      open:[],
+      closed: []
     };
   },
   methods: {
@@ -82,22 +84,24 @@ export default {
       Axios.all([this.Kald1(), this.kald2()])
         .then(
           Axios.spread(function(kald1res, kald2res) {
-            //eslint-disable-next-line
-            //console.log(kald1res);
-            //eslint-disable-next-line
-            //console.log(kald2res.data.records[that.dayOfWeek() - 1]);
-            that.currentDay = kald2res.data.records[that.dayOfWeek() - 1];
+            that.currentDay = kald2res.data.records[that.dayOfWeek()];
             that.prop = kald1res.data.records;
             that.week = kald2res.data.records;
-            //eslint-disable-next-line
-            console.log(that.currentDay);
-
-            //document.getElementsByClassName("dishdes").innerHTML = kald1res
-            //eslint-disable-next-line
           })
         )
         //eslint-disable-next-line
         .catch(e => console.error(e));
+    },
+
+    closedCheck: function() {
+      Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
+        .then(response => {
+          this.closed = response.data.records;
+        })
+        .catch(function(error) {
+          //eslint-disable-next-line
+          console.log(error);
+        });
     },
 
     openTime: function() {
@@ -114,31 +118,40 @@ export default {
 
     openClose: function() {
       const that = this;
+      this.closedCheck();
       Axios.all([this.openTime(), this.buttonStatus()])
         .then(
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
-            //eslint-disable-next-line
-            //console.log(openTimeres.data.records[0].open);
             that.button = buttonStatusres.data.records;
             //eslint-disable-next-line
-            //console.log(that.button);
-            //this.status = response.data.records;
-            //console.log(this.status[0].Status);
-
-            //eslint-disable-next-line
             //console.log(moment().format("HH:mm:ss"));
-            if (that.button[0].Status == "1") {
-              document.getElementById("jombo").style.backgroundColor =
-                "#84FF47";
-              document.getElementById("jombotext").innerHTML =
-                "Kantinen er Åben";
-            }
-            if (that.button[0].Status == "2") {
+            let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+            that.closed.forEach(function(day, index){
+              if (day[weekdays[index]] == 1) {
+              if (that.button[0].Status == "1") {
+                document.getElementById("jombo").style.backgroundColor =
+                  "#84FF47";
+                document.getElementById("jombotext").innerHTML =
+                  "Kantinen er Åben";
+              }else{
+                document.getElementById("jombo").style.backgroundColor = "red";
+                document.getElementById("jombotext").innerHTML =
+                  "Kantinen er Lukket";
+                  if(that.times[0]){
+                    document.getElementById("timetext").innerHTML =
+                  "Åbner igen kl: " + that.times[0].open;
+                  }
+                
+              }
+            }else {
               document.getElementById("jombo").style.backgroundColor = "red";
-              document.getElementById("jombotext").innerHTML = "Kantinen er Lukket";
-              document.getElementById("timetext").innerHTML = "Åbner igen kl: " + that.times[0].open;
+              document.getElementById("jombotext").innerHTML =
+                "Kantinen er Lukket";
+              document.getElementById("timetext").innerHTML =
+                "Åbner igen i morgen ";
             }
+            })
           })
         ) //eslint-disable-next-line
         .catch(e => console.error(e));
@@ -158,7 +171,6 @@ export default {
   },
   mounted() {
     this.samling();
-    this.openClose();
     this.timer();
   }
 };
