@@ -60,24 +60,30 @@ export default {
     };
   },
   methods: {
+    // Her hentes ugens dag
     dayOfWeek() {
       return moment().weekday();
     },
 
+    // Her bliver tiden formateret 
     currentTime() {
       return moment().format("HH, m, s");
     },
 
+    // Kald til endpoint for at få dagens retter
     Kald1() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/dagensret.php"
       );
     },
+
+    // Kald til endpoint for at få ugens menu
     kald2() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/ugensmenu.php"
       );
     },
+    // Her samles de to kald så data kan bruges
     samling() {
       const that = this;
       //eslint-disable-next-line
@@ -93,6 +99,7 @@ export default {
         .catch(e => console.error(e));
     },
 
+    // Et check på om der er lukket
     closedCheck: function() {
       Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
         .then(response => {
@@ -103,19 +110,21 @@ export default {
           console.log(error);
         });
     },
-
+    // Kald til endpoint for at få åbningstider
     openTime: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/nextopentime.php"
       );
     },
 
+    // Kald til endpoint for status på knapsystemet
     buttonStatus: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
       );
     },
 
+    // Her samles de to kald så data kan bruges
     openClose: function() {
       const that = this;
       this.closedCheck();
@@ -157,6 +166,7 @@ export default {
         .catch(e => console.error(e));
     },
 
+    // Timer så siden bliver reloadet hver 10 sek
     timer: function() {
       this.openClose();
 

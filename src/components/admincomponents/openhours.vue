@@ -84,6 +84,7 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  // Check som ser efter om man er logget ind
   beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
         window.location.href = '/admincomponents/login';
@@ -106,6 +107,7 @@ export default {
     };
   },
   methods: {
+    // Dette er hvor POST bilver lavet til åbningstider
     createPost() { 
       const formData = new FormData();
 
@@ -143,6 +145,7 @@ export default {
     }
   },
   mounted() {
+    // Her hentes åbningstider som er gemt i databasen
     Axios({
         method: "get",
         url: "http://menustanderapi.test:8000/endpoints/opentime.php",

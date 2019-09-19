@@ -40,6 +40,7 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  // Check som ser efter om man er logget ind
   beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
         window.location.href = '/admincomponents/login';
@@ -56,6 +57,7 @@ export default {
     };
   },
   methods: {
+    // Dette er hvor POST bilver lavet til at gemme en sideret
     createPost() {
       if(this.dish == "" || this.description == "")
       {

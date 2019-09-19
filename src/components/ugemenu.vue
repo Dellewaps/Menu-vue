@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-5" id="col-right">
           <div class="days-right">
-            <div class="col-md-8">
+            <div class="col-md-8" style="padding-right: unset">
               <h2>Tirsdag</h2>
               <h3>{{prop[1].name}}</h3>
               <div class="priceright">
@@ -53,7 +53,7 @@
         </div>
         <div class="col-md-5" id="col-right">
           <div class="days-right">
-            <div class="col-md-8">
+            <div class="col-md-8" style="padding-right: unset">
               <h2>Torsdag</h2>
               <h3>{{prop[3].name}}</h3>
               <div class="priceright">
@@ -101,6 +101,7 @@ export default {
     };
   },
   methods: {
+    // Et check på om der er lukket
     closedCheck: function() {
       Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
         .then(response => {
@@ -112,18 +113,21 @@ export default {
         });
     },
 
+    // Kald til endpoint for at få åbningstider
     openTime: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/nextopentime.php"
       );
     },
 
+    // Kald til endpoint for status på knapsystemet
     buttonStatus: function() {
       return Axios.get(
         "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
       );
     },
 
+    // Her samles de to kald så data kan bruges
     openClose: function() {
       const that = this;
       this.closedCheck();
@@ -163,6 +167,7 @@ export default {
         .catch(e => console.error(e));
     },
 
+    // Timer så siden bliver reloadet
     timer: function() {
       this.openClose();
 
@@ -177,6 +182,7 @@ export default {
     init() {}
   },
   mounted() {
+    // Kald til endpoint for at få ugens menu data
     Axios({
       method: "get",
       url: "http://menustanderapi.test:8000/endpoints/ugensmenu.php",

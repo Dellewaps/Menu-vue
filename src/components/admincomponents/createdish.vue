@@ -54,6 +54,7 @@ import navbar from "../navbar.vue";
 import Axios from "axios";
 
 export default {
+  // Check som ser efter om man er logget ind
   beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
         window.location.href = '/admincomponents/login';
@@ -73,9 +74,11 @@ export default {
   },
 
   methods: {
+    // Upload af billede
     uploadImage(event) {
       this.selectedFile = event.target.files[0];
     },
+    // Dette er hvor POST bilver lavet til at gemme en Ret
     createPost() {
       if(this.dish == "" || this.price == 0 || this.accessories == "" || this.selectedFile == null)
       {

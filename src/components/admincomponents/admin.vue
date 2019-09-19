@@ -11,24 +11,24 @@
           <div class="card-body">
             <div class="form-group row">
               <div class="col-md-4">
-                <input type="button" @click="registereBruger()" value="Registere en bruger"/>
+                <input type="button" @click="registereBruger()" value="Registere en bruger" style="width: 180px"/>
               </div>
               <div class="col-md-4">
-                <input type="button" @click="createDish()" value="Opret en ret"/>
+                <input type="button" @click="createDish()" value="Opret en ret" style="width: 180px"/>
               </div>
               <div class="col-md-4">
-                <input type="button" @click="createSideDish()" value="Opret en diverse ret"/>
+                <input type="button" @click="createSideDish()" value="Opret en diverse ret" style="width: 180px"/>
               </div>
             </div>
             <div class="form-group row">
               <div class="col-md-4">
-                <input type="button" @click="openHours()" value="Set åbningstider"/>
+                <input type="button" @click="openHours()" value="Set åbningstider" style="width: 180px"/>
               </div>
               <div class="col-md-4">
-                <input type="button" @click="setDaily()" value="Set dagens retter"/>
+                <input type="button" @click="setDaily()" value="Set dagens retter" style="width: 180px"/>
               </div>
               <div class="col-md-4">
-                <input type="button" @click="setWeekmenu()" value="Sæt ugens menu"/>
+                <input type="button" @click="setWeekmenu()" value="Sæt ugens menu" style="width: 180px"/>
               </div>
             </div>
           </div>
@@ -42,6 +42,7 @@
   import navbar from '../navbar.vue'
 
   export default {
+    // Check som ser efter om man er logget ind
     beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
         window.location.href = '/admincomponents/login';
@@ -54,6 +55,7 @@
 
   methods: {
 
+    // Knappe functioner til side skift
     registereBruger(){
       window.location.href = '/admincomponents/registere';
     },

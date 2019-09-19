@@ -2,22 +2,25 @@
   <div class="page" data-name="setdaily" :beforein="init()">
     <div class="container">
       <div class="navbar">
-        <navbar/>        
-      </div>      
-      <div class="banner" id="banner">banner ffs</div> 
+        <navbar />
+      </div>
+      <div class="banner" id="banner">banner ffs</div>
       <div class="row justify-content-center">
         <div class="col-md-8">
           <div class="card" :bind="sides">
-            <div class="card-header">Set dagens menu</div>            
+            <div class="card-header">Set dagens menu</div>
             <div class="card-body">
               <div class="form-group row" :bind="currentDay">
-              <label for="Description" class="col-md-4 col-form-label text-md-right">Tilbehør</label>
+                <label for="Description" class="col-md-4 col-form-label text-md-right">Tilbehør</label>
 
-              <div class="col-md-6">
-                <textarea class="dailydes" v-model="description" :placeholder="currentDay.accessories">
-                </textarea>
+                <div class="col-md-6">
+                  <textarea
+                    class="dailydes"
+                    v-model="description"
+                    :placeholder="currentDay.accessories"
+                  ></textarea>
+                </div>
               </div>
-            </div>
               <div class="form-group row">
                 <label for="sidedish" class="col-md-4 col-form-label text-md-right">Diverse</label>
 
@@ -76,7 +79,7 @@
               </div>
               <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
-                  <input type="button" @click="createPost()" value="Gem dagens menu">
+                  <input type="button" @click="createPost()" value="Gem dagens menu" />
                 </div>
               </div>
             </div>
@@ -94,11 +97,12 @@ import moment from "moment";
 moment.locale("da");
 
 export default {
-  beforeCreate(){
-      if(!sessionStorage.getItem('loggedIn')){
-        window.location.href = '/admincomponents/login';
-      }
-    },
+  // Check som ser efter om man er logget ind
+  beforeCreate() {
+    if (!sessionStorage.getItem("loggedIn")) {
+      window.location.href = "/admincomponents/login";
+    }
+  },
   name: "setdaily",
   components: {
     navbar: navbar
@@ -106,28 +110,34 @@ export default {
   data() {
     return {
       sides: [],
-      sideone:'',
-      sidetwo:'',
-      sidethree:'',
-      sidefour:'',
+      sideone: "",
+      sidetwo: "",
+      sidethree: "",
+      sidefour: "",
       selectedsideone: 0,
       selectedsidetwo: 0,
       selectedsidethree: 0,
-      selectedsidefour: 0,   
+      selectedsidefour: 0,
       currentDay: [],
-      description: '',
+      description: ""
     };
   },
   methods: {
+    // Her hentes ugens dag
     dayOfWeek() {
       return moment().weekday();
     },
+    // Et kald til endpoint for at få alle side retter
     Kald1() {
       return Axios.get("http://menustanderapi.test:8000/endpoints/sideret.php");
     },
+    // Et kald til endpoint for at få ugens menu
     kald2() {
-      return Axios.get("http://menustanderapi.test:8000/endpoints/ugensmenu.php");
+      return Axios.get(
+        "http://menustanderapi.test:8000/endpoints/ugensmenu.php"
+      );
     },
+    // Her samles de to kald så data kan bruges
     samling() {
       const that = this;
       //eslint-disable-next-line
@@ -138,73 +148,80 @@ export default {
             that.sides = kald1res.data.records;
             that.week = kald2res.data.records;
 
-            //eslint-disable-next-line
-          })).catch(e => console.error(e));
+            
+          })
+        )//eslint-disable-next-line
+        .catch(e => console.error(e));
     },
 
+    // Hvis der er ændringer i sideretter
     onChange() {
-        this.selectedsideone = this.sideone.ID
+      this.selectedsideone = this.sideone.ID;
 
-        this.selectedsidetwo = this.sidetwo.ID 
+      this.selectedsidetwo = this.sidetwo.ID;
 
-        this.selectedsidethree = this.sidethree.ID  
+      this.selectedsidethree = this.sidethree.ID;
 
-        this.selectedsidefour = this.sidefour.ID
+      this.selectedsidefour = this.sidefour.ID;
     },
 
+    // Dette er hvor POST bilver lavet til dagens ret
     createPost() {
-      
-      if(this.sideone == '' || this.sidetwo == '' || this.sidethree == '' || this.sidethree == '')
-      {
+      if (
+        this.sideone == "" ||
+        this.sidetwo == "" ||
+        this.sidethree == "" ||
+        this.sidethree == ""
+      ) {
         document.getElementById("banner").style.backgroundColor = "red";
         document.getElementById("banner").style.display = "block";
-        document.getElementById("banner").innerHTML = "Der skal vælges noget i alle Diverse";
+        document.getElementById("banner").innerHTML =
+          "Der skal vælges noget i alle Diverse";
         return;
       }
 
-      if(this.description == '')
-      {
-          this.description = this.currentDay.accessories
-      }else
-      {
-        this.description = this.description
+      if (this.description == "") {
+        this.description = this.currentDay.accessories;
+      } else {
+        this.description = this.description;
       }
 
       const formData = new FormData();
 
-      formData.append('sideone', this.selectedsideone)
-      formData.append('sidetwo', this.selectedsidetwo)
-      formData.append('sidethree', this.selectedsidethree)
-      formData.append('sidefour', this.selectedsidefour)
-      formData.append('description', this.description)
+      formData.append("sideone", this.selectedsideone);
+      formData.append("sidetwo", this.selectedsidetwo);
+      formData.append("sidethree", this.selectedsidethree);
+      formData.append("sidefour", this.selectedsidefour);
+      formData.append("description", this.description);
 
-      Axios.post("http://menustanderapi.test:8000/endpoints/setdailypost.php", 
-      formData, 
-      {        
-        headers: {
-          'Content-Type': 'multipart/form-data'        
-        }
-      }, "json") 
-        .then((response) => {
+      Axios.post(
+        "http://menustanderapi.test:8000/endpoints/setdailypost.php",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        },
+        "json"
+      )
+        .then(response => {
           //eslint-disable-next-line
-          console.log(response.data)
+          console.log(response.data);
           document.getElementById("banner").style.display = "block";
           document.getElementById("banner").innerHTML = response.data.message;
-          if(response.data.result == 1){
-            
+          if (response.data.result == 1) {
             document.getElementById("banner").style.backgroundColor = "green";
-          }else{
+          } else {
             //eslint-disable-next-line
             console.log("GAL");
             document.getElementById("banner").style.backgroundColor = "red";
           }
           //eslint-disable-next-line
-          console.log('Success!!');
-
+          console.log("Success!!");
         })
-        .catch(function () {
+        .catch(function() {
           //eslint-disable-next-line
-          console.error('Failure!!');
+          console.error("Failure!!");
         });
     },
 

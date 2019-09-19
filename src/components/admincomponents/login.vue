@@ -54,6 +54,7 @@ export default {
   },
   
   methods: {    
+    // Dette er hvor POST bilver lavet for at logge ind
     loginPost() {
       if (this.username != "" && this.password != "") {
         
