@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="daydish" :bind="prop">
+        <div class="divdish" :bind="prop">
           <h3>Diverse retter i dag</h3>
           <ul class="divdishlist" v-for="props in prop" :key="props.id">
             <div class="divname">{{ props.name }}</div>
@@ -133,8 +133,6 @@ export default {
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
             that.button = buttonStatusres.data.records;
-            //eslint-disable-next-line
-            //console.log(moment().format("HH:mm:ss"));
             let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
             that.closed.forEach(function(day, index){
               if (day[weekdays[index]] == 1) {

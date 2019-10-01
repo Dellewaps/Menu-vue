@@ -155,7 +155,7 @@ export default {
   // Check som ser efter om man er logget ind
   beforeCreate() {
     if (!sessionStorage.getItem("loggedIn")) {
-      window.location.href = "/admincomponents/login";
+      this.$router.push("/admincomponents/login");
     }
   },
   name: "setweekmenu",
@@ -222,8 +222,6 @@ export default {
       this.selectedthursday = this.thursday.ID;
 
       this.selectedfriday = this.friday.ID;
-      //eslint-disable-next-line
-      console.log(this.selectedfriday);
     },
     // Dette er hvor POST bilver lavet til ugens menu
     createPost() {
@@ -265,14 +263,10 @@ export default {
         "json"
       )
         .then(response => {
-          //eslint-disable-next-line
-          console.log(response.data);
           document.getElementById("banner").style.display = "block";
           document.getElementById("banner").innerHTML = response.data.message;
           if (response.data.result == 1) {
             document.getElementById("banner").style.backgroundColor = "green";
-            //eslint-disable-next-line
-            console.log(response.data.message);
           } else {
             //eslint-disable-next-line
             console.log("GAL");
@@ -301,8 +295,6 @@ export default {
       }
     }).then(response => {
       this.dishes = response.data.records;
-      //eslint-disable-next-line
-      console.log(response.data.records);
     });
   }
 };

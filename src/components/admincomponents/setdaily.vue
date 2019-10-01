@@ -100,7 +100,7 @@ export default {
   // Check som ser efter om man er logget ind
   beforeCreate() {
     if (!sessionStorage.getItem("loggedIn")) {
-      window.location.href = "/admincomponents/login";
+      this.$router.push("/admincomponents/login");
     }
   },
   name: "setdaily",
@@ -205,8 +205,6 @@ export default {
         "json"
       )
         .then(response => {
-          //eslint-disable-next-line
-          console.log(response.data);
           document.getElementById("banner").style.display = "block";
           document.getElementById("banner").innerHTML = response.data.message;
           if (response.data.result == 1) {

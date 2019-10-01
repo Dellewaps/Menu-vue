@@ -45,7 +45,7 @@
     // Check som ser efter om man er logget ind
     beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
-        window.location.href = '/admincomponents/login';
+        this.$router.push('/admincomponents/login');
       }
     },
   name: 'admin',
@@ -57,27 +57,27 @@
 
     // Knappe functioner til side skift
     registereBruger(){
-      window.location.href = '/admincomponents/registere';
+      this.$router.push('/admincomponents/registere')
     },
 
     createDish(){
-      window.location.href = '/admincomponents/createdish';
+      this.$router.push('/admincomponents/createdish')
     },
 
     createSideDish(){
-      window.location.href = '/admincomponents/createsidedish';
+      this.$router.push('/admincomponents/createsidedish')
     },
 
     openHours(){
-      window.location.href = '/admincomponents/openhours';
+      this.$router.push('/admincomponents/openhours')
     },
 
     setDaily(){
-      window.location.href = '/admincomponents/setdaily';
+      this.$router.push('/admincomponents/setdaily')
     },
 
     setWeekmenu(){
-      window.location.href = '/admincomponents/setweekmenu';
+      this.$router.push('/admincomponents/setweekmenu')
     }
   }
   

@@ -5,6 +5,7 @@
         <div class="banner" id="banner">banner ffs</div>
       </div>    
     <div class="row justify-content-center">
+      
       <div class="col-md-8">
         <div class="card">
           <div class="card-header">Registere en bruger</div>
@@ -51,7 +52,7 @@ export default {
   // Check som ser efter om man er logget ind
   beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
-        window.location.href = '/admincomponents/login';
+        this.$router.push('/admincomponents/login');
       }
     },
   name: "registere",
@@ -82,7 +83,19 @@ export default {
           'Content-Type': 'multipart/form-data'        
         }
       }, "json") .then(response => {
-        this.login = response.data;        
+        this.login = response.data;   
+          document.getElementById("banner").style.display = "block";
+          document.getElementById("banner").innerHTML = response.data.message;
+          if (response.data.result == 1) {
+            document.getElementById("banner").style.backgroundColor = "green";
+          } else {
+            //eslint-disable-next-line
+            console.log("GAL");
+            document.getElementById("banner").style.backgroundColor = "red";
+            document.getElementById("banner").innerHTML = "Denne bruger kan ikke oprettes";
+          } 
+          //eslint-disable-next-line
+          console.log(response.data)
         return;
       }).catch(function () {
           //eslint-disable-next-line

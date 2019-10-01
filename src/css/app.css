@@ -33,6 +33,18 @@
 
 
 /* CSS for the daily page*/
+.daydish{
+  border-style: solid;
+  border-width: 2px;
+  margin-right: 1rem;
+}
+
+.divdish{
+  flex: 50%;
+  border-style: solid;
+  border-width: 2px;
+  text-align: center;
+}
 .dayrow{
   margin-left: 8%;
   margin-top: 5%;
@@ -69,12 +81,29 @@
   margin-bottom: 2%;
 }
 
-.head-line {
-  text-align: center;
+.days-left{
+  min-height: 154px;
+  border-style: solid;
+  border-width: 2px
 }
 
-.days-right {
-  display: flex;
+.days-right{
+  min-height: 154px;
+  border-style: solid;
+  border-width: 2px;
+  display: block;
+}
+
+.days-center{
+  min-height: 154px;
+}
+
+.imageright{
+  float: right;
+}
+
+.head-line {
+  text-align: center;
 }
 
 .dayrow {
@@ -96,6 +125,9 @@
 
 .col-md-6.friday{
 margin: auto;
+border-style: solid;
+border-width: 2px;
+padding: unset;
 }
 
 .banner {

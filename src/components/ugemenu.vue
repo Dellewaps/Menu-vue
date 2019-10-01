@@ -25,17 +25,15 @@
         </div>
         <div class="col-md-5" id="col-right">
           <div class="days-right">
-            <div class="col-md-8" style="padding-right: unset">
+            <div class="imageright">
+              <img class="img" v-bind:src="require('../../public/images/' + prop[1].photo)" />
+            </div>
               <h2>Tirsdag</h2>
               <h3>{{prop[1].name}}</h3>
               <div class="priceright">
                 <h4>{{prop[1].price}} kr</h4>
               </div>
               <h4>{{prop[1].accessories}}</h4>
-            </div>
-            <div class="imageright">
-              <img class="img" v-bind:src="require('../../public/images/' + prop[1].photo)" />
-            </div>
           </div>
         </div>
         <div class="col-md-5">
@@ -53,17 +51,15 @@
         </div>
         <div class="col-md-5" id="col-right">
           <div class="days-right">
-            <div class="col-md-8" style="padding-right: unset">
+            <div class="imageright">
+              <img class="img" v-bind:src="require('../../public/images/' + prop[3].photo)" />
+            </div>
               <h2>Torsdag</h2>
               <h3>{{prop[3].name}}</h3>
               <div class="priceright">
                 <h4>{{prop[3].price}} kr</h4>
               </div>
               <h4>{{prop[3].accessories}}</h4>
-            </div>
-            <div class="imageright">
-              <img class="img" v-bind:src="require('../../public/images/' + prop[3].photo)" />
-            </div>
           </div>
         </div>
         <div class="col-md-6 friday">

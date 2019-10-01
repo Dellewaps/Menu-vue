@@ -76,7 +76,8 @@ export default {
           sessionStorage.setItem('username', this.username);
           sessionStorage.setItem('password', this.username);
           sessionStorage.setItem('loggedIn', this.loggedIn);
-          window.location.href = '/admincomponents/admin';
+          this.$router.push('/admincomponents/admin')
+          //window.location.href = '/admincomponents/admin';
         }else{
         document.getElementById("banner").style.backgroundColor = "red";
         document.getElementById("banner").style.display = "block";

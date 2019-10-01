@@ -8,15 +8,15 @@
     <ul class="navbar-nav">
      
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <router-link class="nav-link dropdown-toggle" to="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown link
-        </a>
+        </router-link>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="/admincomponents/setdaily">Set dagens retter</a>
-          <a class="dropdown-item" href="/admincomponents/setweekmenu">Set ugens menu</a>
-          <a class="dropdown-item" href="/admincomponents/createdish">opret en ret</a>
-          <a class="dropdown-item" href="/admincomponents/createsidedish">opret en sideret</a>
-          <a class="dropdown-item" href="/admincomponents/openhours">Set Åbningstider</a>
+          <router-link class="dropdown-item" to="/admincomponents/setdaily">Set dagens retter</router-link>
+          <router-link class="dropdown-item" to="/admincomponents/setweekmenu">Set ugens menu</router-link>
+          <router-link class="dropdown-item" to="/admincomponents/createdish">opret en ret</router-link>
+          <router-link class="dropdown-item" to="/admincomponents/createsidedish">opret en sideret</router-link>
+          <router-link class="dropdown-item" to="/admincomponents/openhours">Set Åbningstider</router-link>
         </div>
       </li>
     </ul>
@@ -33,7 +33,7 @@ export default {
   methods: { 
     Logout(){
       sessionStorage.clear();
-      window.location.href = '/';
+      this.$router.push('/');
     }
 
   }

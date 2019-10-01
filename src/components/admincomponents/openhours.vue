@@ -87,7 +87,7 @@ export default {
   // Check som ser efter om man er logget ind
   beforeCreate(){
       if(!sessionStorage.getItem('loggedIn')){
-        window.location.href = '/admincomponents/login';
+        this.$router.push('/admincomponents/login');
       }
     },
   name: "openhours",
@@ -153,8 +153,7 @@ export default {
           Accept: "application/json"
         }
       }).then(response => {
-        this.times = response.data.records;                
-        
+        this.times = response.data.records;
       });
   }
 };
