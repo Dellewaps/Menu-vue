@@ -129,12 +129,12 @@ export default {
     },
     // Et kald til endpoint for at få alle side retter
     Kald1() {
-      return Axios.get("http://menustanderapi.test:8000/endpoints/sideret.php");
+      return Axios.get("/endpoints/sideret.php");
     },
     // Et kald til endpoint for at få ugens menu
     kald2() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/ugensmenu.php"
+        "/endpoints/ugensmenu.php"
       );
     },
     // Her samles de to kald så data kan bruges
@@ -195,7 +195,7 @@ export default {
       formData.append("description", this.description);
 
       Axios.post(
-        "http://menustanderapi.test:8000/endpoints/setdailypost.php",
+        "/endpoints/setdailypost.php",
         formData,
         {
           headers: {

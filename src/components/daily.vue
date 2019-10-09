@@ -48,6 +48,9 @@ import moment from "moment";
 moment.locale("da");
 
 export default {
+  beforeMount() {
+    this.$destroy;
+  },
   name: "daily",
   data() {
     return {
@@ -55,8 +58,10 @@ export default {
       week: {},
       currentDay: [],
       today: moment().format("dddd"),
-      open:[],
-      closed: []
+      open: [],
+      closed: [],
+      timercount: 0,
+      myTimer: null,
     };
   },
   methods: {
@@ -65,7 +70,7 @@ export default {
       return moment().weekday();
     },
 
-    // Her bliver tiden formateret 
+    // Her bliver tiden formateret
     currentTime() {
       return moment().format("HH, m, s");
     },
@@ -73,14 +78,14 @@ export default {
     // Kald til endpoint for at få dagens retter
     Kald1() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/dagensret.php"
+        "/endpoints/dagensret.php"
       );
     },
 
     // Kald til endpoint for at få ugens menu
     kald2() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/ugensmenu.php"
+        "/endpoints/ugensmenu.php"
       );
     },
     // Her samles de to kald så data kan bruges
@@ -101,7 +106,7 @@ export default {
 
     // Et check på om der er lukket
     closedCheck: function() {
-      Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
+      Axios.get("/endpoints/closedcheck.php")
         .then(response => {
           this.closed = response.data.records;
         })
@@ -113,14 +118,14 @@ export default {
     // Kald til endpoint for at få åbningstider
     openTime: function() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/nextopentime.php"
+        "/endpoints/nextopentime.php"
       );
     },
 
     // Kald til endpoint for status på knapsystemet
     buttonStatus: function() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
+        "/endpoints/knapsystemstatus.php"
       );
     },
 
@@ -133,32 +138,40 @@ export default {
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
             that.button = buttonStatusres.data.records;
-            let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            that.closed.forEach(function(day, index){
+            let weekdays = [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday"
+            ];
+            that.closed.forEach(function(day, index) {
               if (day[weekdays[index]] == 1) {
-              if (that.button[0].Status == "1") {
-                document.getElementById("jombo").style.backgroundColor =
-                  "#84FF47";
-                document.getElementById("jombotext").innerHTML =
-                  "Kantinen er Åben";
-              }else{
+                if (that.button[0].Status == "1") {
+                  document.getElementById("jombo").style.backgroundColor =
+                    "#84FF47";
+                  document.getElementById("jombotext").innerHTML =
+                    "Kantinen er Åben";
+                  document.getElementById("timetext").innerHTML = "";
+                } else {
+                  document.getElementById("jombo").style.backgroundColor =
+                    "red";
+                  document.getElementById("jombotext").innerHTML =
+                    "Kantinen er Lukket";
+                  if (that.times[0]) {
+                    document.getElementById("timetext").innerHTML =
+                      "Åbner igen kl: " + that.times[0].open;
+                  }
+                }
+                return;
+              } else {
                 document.getElementById("jombo").style.backgroundColor = "red";
                 document.getElementById("jombotext").innerHTML =
                   "Kantinen er Lukket";
-                  if(that.times[0]){
-                    document.getElementById("timetext").innerHTML =
-                  "Åbner igen kl: " + that.times[0].open;
-                  }
-                
+                document.getElementById("timetext").innerHTML =
+                  "Åbner igen i morgen ";
               }
-            }else {
-              document.getElementById("jombo").style.backgroundColor = "red";
-              document.getElementById("jombotext").innerHTML =
-                "Kantinen er Lukket";
-              document.getElementById("timetext").innerHTML =
-                "Åbner igen i morgen ";
-            }
-            })
+            });
           })
         ) //eslint-disable-next-line
         .catch(e => console.error(e));
@@ -167,18 +180,34 @@ export default {
     // Timer så siden bliver reloadet hver 10 sek
     timer: function() {
       this.openClose();
+     this.myTimer = setTimeout(() => {
+        
+        this.timercount++;
+        if (this.timercount == 12) {
+          this.timercount = 0;
+          clearInterval(this.myTimer);
+          //eslint-disable-next-line
+        console.log("pageswitch");
+          this.pageswitch();
+        }
+        //eslint-disable-next-line
+        console.log(this.timercount);
+        this.timer();
+        }, 5000);
+    },
 
-      setInterval(
-        function() {
-          this.openClose();
-        }.bind(this),
-        10000
-      );
+    pageswitch: function() {
+      this.$router.replace("/ugemenu");
     },
     init() {}
   },
+  beforeDestroy () {
+      clearInterval(this.myTimer);
+    },
   mounted() {
     this.samling();
+    this.closedCheck();
+    this.openClose();
     this.timer();
   }
 };

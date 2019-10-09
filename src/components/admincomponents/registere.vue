@@ -76,7 +76,7 @@ export default {
         formData.append('name', this.username)
         formData.append('password', this.password)
 
-        Axios.post("http://menustanderapi.test:8000/endpoints/registerepost.php", 
+        Axios.post("/endpoints/registerepost.php", 
       formData, 
       {        
         headers: {

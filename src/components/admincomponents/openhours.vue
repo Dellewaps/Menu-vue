@@ -120,7 +120,7 @@ export default {
       formData.append('afternoonOpen', this.afternoonOpen)
       formData.append('afternoonClose', this.afternoonClose)
 
-      Axios.post("http://menustanderapi.test:8000/endpoints/opentimespost.php", 
+      Axios.post("/endpoints/opentimespost.php", 
       formData, 
       {        
         headers: {
@@ -148,7 +148,7 @@ export default {
     // Her hentes åbningstider som er gemt i databasen
     Axios({
         method: "get",
-        url: "http://menustanderapi.test:8000/endpoints/opentime.php",
+        url: "/endpoints/opentime.php",
         headers: {
           Accept: "application/json"
         }

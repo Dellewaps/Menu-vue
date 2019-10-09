@@ -95,7 +95,7 @@ export default {
       formData.append("image", this.selectedFile);
 
       Axios.post(
-        "http://menustanderapi.test:8000/endpoints/createdishpost.php",
+        "/endpoints/createdishpost.php",
         formData,
         {
           headers: {
@@ -111,7 +111,7 @@ export default {
             document.getElementById("banner").style.backgroundColor = "green";
           } else {
             //eslint-disable-next-line
-            console.log("GAL");
+            console.error(response);
             document.getElementById("banner").style.backgroundColor = "red";
           }
           //eslint-disable-next-line

@@ -72,7 +72,7 @@ export default {
       formData.append("description", this.description);
 
       Axios.post(
-        "http://menustanderapi.test:8000/endpoints/createsidedishpost.php",
+        "/endpoints/createsidedishpost.php",
         formData,
         {
           headers: {

@@ -253,7 +253,7 @@ export default {
       formData.append("fridaycheck", this.fridaychecked);
 
       Axios.post(
-        "http://menustanderapi.test:8000/endpoints/setweekpost.php",
+        "/endpoints/setweekpost.php",
         formData,
         {
           headers: {
@@ -289,7 +289,7 @@ export default {
   mounted() {
     Axios({
       method: "get",
-      url: "http://menustanderapi.test:8000/endpoints/alleretter.php",
+      url: "/endpoints/alleretter.php",
       headers: {
         Accept: "application/json"
       }

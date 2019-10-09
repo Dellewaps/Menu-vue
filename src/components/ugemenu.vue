@@ -28,12 +28,12 @@
             <div class="imageright">
               <img class="img" v-bind:src="require('../../public/images/' + prop[1].photo)" />
             </div>
-              <h2>Tirsdag</h2>
-              <h3>{{prop[1].name}}</h3>
-              <div class="priceright">
-                <h4>{{prop[1].price}} kr</h4>
-              </div>
-              <h4>{{prop[1].accessories}}</h4>
+            <h2>Tirsdag</h2>
+            <h3>{{prop[1].name}}</h3>
+            <div class="priceright">
+              <h4>{{prop[1].price}} kr</h4>
+            </div>
+            <h4>{{prop[1].accessories}}</h4>
           </div>
         </div>
         <div class="col-md-5">
@@ -54,12 +54,12 @@
             <div class="imageright">
               <img class="img" v-bind:src="require('../../public/images/' + prop[3].photo)" />
             </div>
-              <h2>Torsdag</h2>
-              <h3>{{prop[3].name}}</h3>
-              <div class="priceright">
-                <h4>{{prop[3].price}} kr</h4>
-              </div>
-              <h4>{{prop[3].accessories}}</h4>
+            <h2>Torsdag</h2>
+            <h3>{{prop[3].name}}</h3>
+            <div class="priceright">
+              <h4>{{prop[3].price}} kr</h4>
+            </div>
+            <h4>{{prop[3].accessories}}</h4>
           </div>
         </div>
         <div class="col-md-6 friday">
@@ -82,8 +82,9 @@
 
 <script>
 import Axios from "axios";
-import { setInterval } from "timers";
+//import { setInterval } from "timers";
 import moment from "moment";
+//import Vue from "vue";
 moment.locale("da");
 
 export default {
@@ -93,13 +94,16 @@ export default {
       prop: [],
       status: [],
       open: [],
-      closed: []
+      closed: [],
+      timercount: 0,
+      myTimer: null,
     };
   },
+
   methods: {
     // Et check på om der er lukket
     closedCheck: function() {
-      Axios.get("http://menustanderapi.test:8000/endpoints/closedcheck.php")
+      Axios.get("/endpoints/closedcheck.php")
         .then(response => {
           this.closed = response.data.records;
         })
@@ -112,14 +116,14 @@ export default {
     // Kald til endpoint for at få åbningstider
     openTime: function() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/nextopentime.php"
+        "/endpoints/nextopentime.php"
       );
     },
 
     // Kald til endpoint for status på knapsystemet
     buttonStatus: function() {
       return Axios.get(
-        "http://menustanderapi.test:8000/endpoints/knapsystemstatus.php"
+        "/endpoints/knapsystemstatus.php"
       );
     },
 
@@ -132,32 +136,40 @@ export default {
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
             that.button = buttonStatusres.data.records;
-            let weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            that.closed.forEach(function(day, index){
+            let weekdays = [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday"
+            ];
+            that.closed.forEach(function(day, index) {
               if (day[weekdays[index]] == 1) {
-              if (that.button[0].Status == "1") {
-                document.getElementById("jombo").style.backgroundColor =
-                  "#84FF47";
-                document.getElementById("jombotext").innerHTML =
-                  "Kantinen er Åben";
-              }else{
+                if (that.button[0].Status == "1") {
+                  document.getElementById("jombo").style.backgroundColor =
+                    "#84FF47";
+                  document.getElementById("jombotext").innerHTML =
+                    "Kantinen er Åben";
+                  document.getElementById("timetext").innerHTML = "";
+                } else {
+                  document.getElementById("jombo").style.backgroundColor =
+                    "red";
+                  document.getElementById("jombotext").innerHTML =
+                    "Kantinen er Lukket";
+                  if (that.times[0]) {
+                    document.getElementById("timetext").innerHTML =
+                      "Åbner igen kl: " + that.times[0].open;
+                  }
+                }
+                return;
+              } else {
                 document.getElementById("jombo").style.backgroundColor = "red";
                 document.getElementById("jombotext").innerHTML =
                   "Kantinen er Lukket";
-                  if(that.times[0]){
-                    document.getElementById("timetext").innerHTML =
-                  "Åbner igen kl: " + that.times[0].open;
-                  }
-                
+                document.getElementById("timetext").innerHTML =
+                  "Åbner igen i morgen ";
               }
-            }else {
-              document.getElementById("jombo").style.backgroundColor = "red";
-              document.getElementById("jombotext").innerHTML =
-                "Kantinen er Lukket";
-              document.getElementById("timetext").innerHTML =
-                "Åbner igen i morgen ";
-            }
-            })
+            });
           })
         ) //eslint-disable-next-line
         .catch(e => console.error(e));
@@ -166,22 +178,37 @@ export default {
     // Timer så siden bliver reloadet
     timer: function() {
       this.openClose();
+      this.myTimer = setTimeout(() => {
+        
+        this.timercount++;
+        if (this.timercount == 12) {
+          this.timercount = 0;
+          clearInterval(this.myTimer);
+          //eslint-disable-next-line
+        console.log("pageswitch");
+          this.pageswitch();
+        }
+        //eslint-disable-next-line
+        console.log(this.timercount);
+        
+      this.timer();
+      }, 5000);
+    },
 
-      setInterval(
-        function() {
-          this.openClose();
-        }.bind(this),
-        10000
-      );
+    pageswitch: function() {
+      this.$router.replace("/daily");
     },
 
     init() {}
   },
+  beforeDestroy () {
+      clearInterval(this.myTimer);
+    },
   mounted() {
     // Kald til endpoint for at få ugens menu data
     Axios({
       method: "get",
-      url: "http://menustanderapi.test:8000/endpoints/ugensmenu.php",
+      url: "/endpoints/ugensmenu.php",
       headers: {
         Accept: "application/json"
       }
@@ -189,6 +216,7 @@ export default {
       this.prop = response.data.records;
     });
     this.closedCheck();
+    this.openClose();
     this.timer();
   }
 };
