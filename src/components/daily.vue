@@ -97,7 +97,7 @@ export default {
           Axios.spread(function(kald1res, kald2res) {
             that.currentDay = kald2res.data.records[that.dayOfWeek()];
             that.prop = kald1res.data.records;
-            that.week = kald2res.data.records;
+            that.week = kald2res.data.records;            
           })
         )
         //eslint-disable-next-line
@@ -138,16 +138,12 @@ export default {
           Axios.spread(function(openTimeres, buttonStatusres) {
             that.times = openTimeres.data.records;
             that.button = buttonStatusres.data.records;
-            let weekdays = [
-              "monday",
-              "tuesday",
-              "wednesday",
-              "thursday",
-              "friday"
-            ];
-            that.closed.forEach(function(day, index) {
-              if (day[weekdays[index]] == 1) {
-                if (that.button[0].Status == "1") {
+                 
+              for (var i = 0, len = that.closed.length; i < len; i++ )  {
+                if(that.dayOfWeek() == i){
+                if(Object.values(that.closed[i]) == 1)
+               {
+                 if (that.button[0].Status == "1") {
                   document.getElementById("jombo").style.backgroundColor =
                     "#84FF47";
                   document.getElementById("jombotext").innerHTML =
@@ -161,23 +157,26 @@ export default {
                   if (that.times[0]) {
                     document.getElementById("timetext").innerHTML =
                       "Åbner igen kl: " + that.times[0].open;
+                  }else{
+                    document.getElementById("timetext").innerHTML =
+                      "Vent venligst ";
                   }
                 }
-                return;
-              } else {
-                document.getElementById("jombo").style.backgroundColor = "red";
+               }else{
+                 document.getElementById("jombo").style.backgroundColor = "red";
                 document.getElementById("jombotext").innerHTML =
                   "Kantinen er Lukket";
                 document.getElementById("timetext").innerHTML =
                   "Åbner igen i morgen ";
+               }
+                }
               }
-            });
-          })
+                      })
         ) //eslint-disable-next-line
         .catch(e => console.error(e));
     },
 
-    // Timer så siden bliver reloadet hver 10 sek
+    // Timer så siden bliver reloadet hver 5 sek
     timer: function() {
       this.openClose();
      this.myTimer = setTimeout(() => {
@@ -190,8 +189,6 @@ export default {
         console.log("pageswitch");
           this.pageswitch();
         }
-        //eslint-disable-next-line
-        console.log(this.timercount);
         this.timer();
         }, 5000);
     },

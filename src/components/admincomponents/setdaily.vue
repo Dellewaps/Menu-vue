@@ -134,8 +134,7 @@ export default {
     // Et kald til endpoint for at få ugens menu
     kald2() {
       return Axios.get(
-        "/endpoints/ugensmenu.php"
-      );
+        "/endpoints/ugensmenu.php");
     },
     // Her samles de to kald så data kan bruges
     samling() {
